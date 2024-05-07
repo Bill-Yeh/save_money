@@ -1,15 +1,17 @@
 <template>
     <v-card
-    class="mx-auto"
-    max-width="344"
-    title="User Registration"
-  >
+    class="mx-auto register-card"
+    variant="outlined"
+    color="primary"
+    title="User Registration">
     <v-container>
       <v-text-field
         v-model="first"
         color="primary"
         label="First name"
         variant="underlined"
+        :rules="[rules.required]"
+        clearable
       ></v-text-field>
 
       <v-text-field
@@ -17,6 +19,8 @@
         color="primary"
         label="Last name"
         variant="underlined"
+        :rules="[rules.required]"
+        clearable
       ></v-text-field>
 
       <v-text-field
@@ -24,6 +28,8 @@
         color="primary"
         label="Email"
         variant="underlined"
+        clearable
+        :rules="[rules.required, rules.email]"
       ></v-text-field>
 
       <v-text-field
@@ -32,6 +38,8 @@
         label="Password"
         placeholder="Enter your password"
         variant="underlined"
+        :rules="[rules.required]"
+        clearable
       ></v-text-field>
 
       <v-checkbox
@@ -44,41 +52,15 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-
-      <v-btn color="success">
+      <v-btn
+      style="width: auto; margin-top: 2%;" 
+      color="success"
+      variant="elevated">
         Complete Registration
-
         <v-icon icon="mdi-chevron-right" end></v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
-    <!-- <v-card variant="outlined" color="primary" class="auth-card">
-        <v-card-title>Register</v-card-title>
-        <v-form>
-            <v-text-field
-            class="mb-2"
-            label="Account"
-            placeholder="Enter your email or phone number"
-            clearable
-            ></v-text-field>
-
-            <v-text-field
-            label="Password"
-            placeholder="Enter your password"
-            clearable
-            ></v-text-field>
-
-            <v-btn
-            color="success"
-            size="large"
-            type="submit"
-            variant="elevated"
-            block>
-                Register
-            </v-btn>
-        </v-form>
-    </v-card> -->
 </template>
 
 <script>
@@ -89,16 +71,32 @@ definePageMeta({
 export default{
     data () {
         return {
-            first: null
+            first: null,
+            last: null,
+            email: null,
+            password: null,
+            terms: false,
+            rules: {
+              required: value => !!value || 'Required.',
+              email: value => {
+                const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                return pattern.test(value) || 'Invalid e-mail.'
+              }
+            }
         }
     }
 }
 </script>
 
-<!-- <style scoped>
-    .auth-card{
-        width: 30%;
-        padding: 3%;
+<style scoped>
+    .register-card{
+        width: 45%;
+        padding: 1%;
         background-color: #fff;
     }
-</style> -->
+    @media screen and (max-width:768px) { 
+        .register-card{
+            width: 75%;
+        }
+    }
+</style>
