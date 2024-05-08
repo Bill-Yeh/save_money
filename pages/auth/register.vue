@@ -51,24 +51,24 @@
 
     <v-divider></v-divider>
 
-    <v-card-actions>
-      <v-btn
-      style="width: auto; margin-top: 2%;" 
-      color="success"
-      variant="elevated">
-        Complete Registration
-        <v-icon icon="mdi-chevron-right" end></v-icon>
-      </v-btn>
+    <v-card-actions style="justify-content: flex-end;">
+      <auth-warning>
+        <template #button />
+      </auth-warning>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import AuthWarning from '~/components/auth/auth-warning'
 definePageMeta({
     layout: 'auth',
     title: 'Register'
 })
 export default{
+  components: {
+    AuthWarning
+  },
     data () {
         return {
             first: null,
