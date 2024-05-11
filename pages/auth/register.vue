@@ -41,20 +41,37 @@
         :rules="[rules.required]"
         clearable
       ></v-text-field>
-
-      <v-checkbox
-        v-model="terms"
-        color="secondary"
-        label="I agree to site terms and conditions"
-      ></v-checkbox>
+      <v-checkbox v-model="checkbox">
+        <template v-slot:label>
+          <div>
+            I agree that
+            <auth-warning types="terms">
+              <template #button="{ openDialog }">
+                <span style="font-weight: 600; color: blue" @click="openDialog">
+                  terms of service
+                  <v-tooltip
+                    activator="parent"
+                    location="bottom">
+                    See the terms of service
+                  </v-tooltip>
+                </span>
+              </template>
+            </auth-warning>
+          </div>
+        </template>
+      </v-checkbox>
     </v-container>
 
     <v-divider></v-divider>
 
     <v-card-actions style="justify-content: flex-end;">
-      <auth-warning>
-        <template #button />
-      </auth-warning>
+      <v-btn
+      style="width: auto; margin-top: 2%; text-transform: none; font-weight: 600;"
+      color="success"
+      variant="elevated">
+        Complete Registration
+        <v-icon icon="mdi-chevron-right" end></v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -69,22 +86,27 @@ export default{
   components: {
     AuthWarning
   },
-    data () {
-        return {
-            first: null,
-            last: null,
-            email: null,
-            password: null,
-            terms: false,
-            rules: {
-              required: value => !!value || 'Required.',
-              email: value => {
-                const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                return pattern.test(value) || 'Invalid e-mail.'
-              }
+  data () {
+      return {
+          first: null,
+          last: null,
+          email: null,
+          password: null,
+          checkbox: false,
+          rules: {
+            required: value => !!value || 'Required.',
+            email: value => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              return pattern.test(value) || 'Invalid e-mail.'
             }
-        }
+          }
+      }
+  },
+  methods: {
+    openDialog() {
+      console.log('open dialog')
     }
+  }
 }
 </script>
 

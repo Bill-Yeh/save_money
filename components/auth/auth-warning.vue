@@ -3,42 +3,37 @@
       v-model="dialog"
       max-width="400"
     >
-      <template v-slot:activator="{ props: activatorProps }">
-        <v-btn
-          style="width: auto; margin-top: 2%;"
-          color="success"
-          variant="elevated"
-          v-bind="activatorProps">
-            Complete Registration
-            <v-icon icon="mdi-chevron-right" end></v-icon>
-          </v-btn>
+      <template #activator="{ on }">
+        <slot name="button" :openDialog="openDialog"></slot>
       </template>
-      <!-- <template #activator="{ on }">
-        <slot name="button" :on="on"></slot>
-      </template> -->
 
-      <v-card
-        prepend-icon="mdi-map-marker"
-        text="Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running."
-        title="Use Google's location service?"
-      >
-        <template v-slot:actions>
-          <v-spacer></v-spacer>
+      <v-card>
+        <v-card-title>Terms of service</v-card-title>
+        <v-card-text style="padding: 0 5%;">
+          Think about the other forms you have to sign in your life. Your employment contract. Your mobile phone contract. Consent forms, such as for medical treatments. Service agreements at places you get help.
 
-          <v-btn>
-            Disagree
-          </v-btn>
+          If you have a high level of literacy, you can probably navigate these situations with some confidence. You may not be able to understand the Microsoft terms and conditions (unless you are a lawyer!), but when your doctor’s office hands you their cancellation policy, you can read it and sign your acceptance, feeling satisfied that you have understood what you are agreeing to.
 
-          <v-btn>
-            Agree
-          </v-btn>
-        </template>
+          However, if you are one of the 44% of Australians who have low literacy, you are likely not provided with information you can read when it comes to signing a contract. Just like me when faced with those nasty terms and conditions, you probably sign the form without reading it.
+        </v-card-text>
+        <v-btn
+          style="text-transform: none; font-weight: 600;"
+          color=primary
+          @click="closeDialog">
+          Confirm
+        </v-btn>
       </v-card>
     </v-dialog>
 </template>
 
 <script>
   export default {
+    props: {
+      types: {
+        type: String,
+        default: ''
+      }
+    },
     data () {
       return {
         dialog: false,
@@ -46,7 +41,10 @@
     },
     methods: {
       openDialog() {
-        this.dialog = true
+        this.dialog = !this.dialog
+      },
+      closeDialog() {
+        this.dialog = false
       }
     }
   }
