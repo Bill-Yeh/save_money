@@ -1,79 +1,76 @@
 <template>
+  <div class="register">
     <v-card
-    class="mx-auto register-card"
     variant="outlined"
     color="primary"
     title="User Registration">
-    <v-container>
-      <v-text-field
-        v-model="first"
-        color="primary"
-        label="First name"
-        variant="underlined"
-        :rules="[rules.required]"
-        clearable
-      ></v-text-field>
-
-      <v-text-field
-        v-model="last"
-        color="primary"
-        label="Last name"
-        variant="underlined"
-        :rules="[rules.required]"
-        clearable
-      ></v-text-field>
-
-      <v-text-field
-        v-model="email"
-        color="primary"
-        label="Email"
-        variant="underlined"
-        clearable
-        :rules="[rules.required, rules.email]"
-      ></v-text-field>
-
-      <v-text-field
-        v-model="password"
-        color="primary"
-        label="Password"
-        placeholder="Enter your password"
-        variant="underlined"
-        :rules="[rules.required]"
-        clearable
-      ></v-text-field>
-      <v-checkbox v-model="checkbox">
-        <template v-slot:label>
-          <div>
-            I agree that
-            <auth-warning types="terms">
-              <template #button="{ openDialog }">
-                <span style="font-weight: 600; color: blue" @click="openDialog">
-                  terms of service
-                  <v-tooltip
-                    activator="parent"
-                    location="bottom">
-                    See the terms of service
-                  </v-tooltip>
-                </span>
-              </template>
-            </auth-warning>
-          </div>
-        </template>
-      </v-checkbox>
-    </v-container>
-
-    <v-divider></v-divider>
-
-    <v-card-actions style="justify-content: flex-end;">
-      <v-btn
-      style="width: auto; margin-top: 2%; text-transform: none; font-weight: 600;"
-      color="success"
-      variant="elevated">
-        Complete Registration
-        <v-icon icon="mdi-chevron-right" end></v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+      <v-container>
+        <v-text-field
+          v-model="first"
+          color="primary"
+          label="First name"
+          variant="underlined"
+          :rules="[rules.required]"
+          clearable
+        ></v-text-field>
+        <v-text-field
+          v-model="last"
+          color="primary"
+          label="Last name"
+          variant="underlined"
+          :rules="[rules.required]"
+          clearable
+        ></v-text-field>
+        <v-text-field
+          v-model="email"
+          color="primary"
+          label="Email"
+          variant="underlined"
+          clearable
+          :rules="[rules.required, rules.email]"
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          color="primary"
+          label="Password"
+          placeholder="Enter your password"
+          variant="underlined"
+          :rules="[rules.required]"
+          clearable
+        ></v-text-field>
+        <v-checkbox v-model="checkbox">
+          <template v-slot:label>
+            <div>
+              I agree that
+              <auth-warning types="terms">
+                <template #button="{ openDialog }">
+                  <span style="font-weight: 600; color: blue" @click="openDialog">
+                    terms of service
+                    <v-tooltip
+                      activator="parent"
+                      location="bottom">
+                      See the terms of service
+                    </v-tooltip>
+                  </span>
+                </template>
+              </auth-warning>
+            </div>
+          </template>
+        </v-checkbox>
+      </v-container>
+      <v-divider></v-divider>
+      <v-card-actions style="justify-content: flex-end;">
+        <v-btn
+        style="width: auto; margin-top: 2%; text-transform: none; font-weight: 600;"
+        color="success"
+        variant="elevated"
+        :disabled="validationFales">
+          Complete Registration
+          <v-icon icon="mdi-chevron-right" end></v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -102,23 +99,28 @@ export default{
           }
       }
   },
+  computed: {
+    validationFales() {
+      return !this.first || !this.last || !this.email || !this.password || !this.checkbox || !this.validEmail(this.email)
+    }
+  },
   methods: {
-    openDialog() {
-      console.log('open dialog')
+    validEmail(email) {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(email)
     }
   }
 }
 </script>
 
 <style scoped>
-    .register-card{
-        width: 45%;
-        padding: 1%;
-        background-color: #fff;
-    }
-    @media screen and (max-width:768px) { 
-        .register-card{
-            width: 75%;
-        }
-    }
+  .register {
+    width: 45%;
+    background-color: #fff;
+  }
+  @media screen and (max-width:768px) { 
+      .register{
+          width: 80%;
+      }
+  }
 </style>
