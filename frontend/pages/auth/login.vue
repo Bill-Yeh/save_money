@@ -1,6 +1,9 @@
 <template>
     <v-card variant="outlined" color="primary" class="auth-card">
-        <v-card-title>Login</v-card-title>
+        <div class="title-remind-info">
+            <v-card-title>Login</v-card-title>
+            <span v-show="errMsg"style="color: red; font-size: 12px;">Wrong account or password!</span>
+        </div>
         <v-form>
             <v-text-field
             class="mb-2"
@@ -13,6 +16,7 @@
             label="Password"
             placeholder="Enter your password"
             clearable
+            type="password"
             ></v-text-field>
 
             <v-btn
@@ -47,6 +51,11 @@ definePageMeta({
     layout: 'auth'
 })
 export default{
+    data () {
+      return {
+        errMsg: false,
+      }
+    },
   methods: {
     createOne(){
         this.$router.push({ path: "/auth/register" })
@@ -60,6 +69,10 @@ export default{
         width: 45%;
         padding: 3%;
         background-color: #fff;
+    }
+    .title-remind-info {
+        display: flex;
+        align-items: center;
     }
     .goto-register{
         display: flex;
