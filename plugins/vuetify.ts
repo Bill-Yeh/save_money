@@ -7,7 +7,7 @@ export default defineNuxtPlugin((app) => {
     const vuetify = createVuetify({
         // ... your configuration
         display: {
-            mobileBreakpoint: 'sm',
+            mobileBreakpoint: 'xs',
             thresholds: {
                 xs: 768,
                 sm: 960,
