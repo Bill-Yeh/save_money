@@ -1,32 +1,45 @@
 <template>
-  <div class="month-chart-picker">
-    <div class="month-picker">
-      <el-date-picker
-        v-model="value"
-        type="month"
-        placeholder="Pick a month"
-        format="YYYY/MM"
-        :clearable="false"
-        @change="changeFormat"
-      />
+  <div style="width: 95%; margin: auto;">
+    <div v-if="isMobile" class="home-page-fuction-bar">
+      <div class="all-time-switch">
+        <v-switch
+          v-model="allTime"
+          color="primary"
+          label="All Time Record"
+          hide-details
+        ></v-switch>
+      </div>
+      <div class="month-picker">
+        <el-date-picker
+          v-model="value"
+          type="month"
+          placeholder="Pick a month"
+          format="YYYY/MM"
+          :clearable="false"
+          @change="changeFormat"
+        />
+      </div>
+      <div class="radio-group">
+        <v-radio-group
+          v-model="displayChart"
+          inline
+          style="display: flex;"
+        >
+          <v-radio value="pie-chart" color="#1E88E5">
+            <template #label>
+              <v-icon>mdi-chart-pie</v-icon>
+            </template>
+          </v-radio>
+          <v-radio value="calendar" color="#1E88E5">
+            <template #label>
+              <v-icon>mdi-calendar-month</v-icon>
+            </template>
+          </v-radio>
+        </v-radio-group>
+      </div>
     </div>
-    <div class="radio-group">
-      <v-radio-group
-        v-model="displayChart"
-        inline
-        style="display: flex;"
-      >
-        <v-radio value="pie-chart" color="#1E88E5">
-          <template #label>
-            <v-icon>mdi-chart-pie</v-icon>
-          </template>
-        </v-radio>
-        <v-radio value="calendar" color="#1E88E5">
-          <template #label>
-            <v-icon>mdi-calendar-month</v-icon>
-          </template>
-        </v-radio>
-      </v-radio-group>
+    <div v-if="displayChart === 'calendar'" class="calendar">
+      <v-calendar color="primary"></v-calendar>
     </div>
   </div>
 </template>
@@ -35,8 +48,18 @@
   export default {
     data() {
       return {
+        allTime: true,
         value: this.getCurrentMonth(),
         displayChart: 'pie-chart'
+      }
+    },
+    computed: {
+      isMobile() {
+          if (this.$vuetify.display.mobile) {
+            return false
+          } else {
+            return true
+          }
       }
     },
     methods: {
@@ -44,7 +67,7 @@
         const date = new Date();
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        return `${year}-${month}`;
+        return `${year}-${month}`
       },
       changeFormat(date) {
         const year = new Date(date).getFullYear()
@@ -56,18 +79,12 @@
 </script>
 
 <style scoped>
-.month-chart-picker{
+.home-page-fuction-bar{
   width: 100%;
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  margin: 3% 0 0 3%;
+  margin: 2% 0 0 2%;
 
-}
-@media screen and (max-width:768px) { 
-  .month-chart-picker{
-    max-width: 95%;
-    flex-direction: column;
-    justify-content: center;
-  }
 }
 </style>
