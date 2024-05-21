@@ -38,6 +38,9 @@
         </v-radio-group>
       </div>
     </div>
+    <div v-if="displayChart === 'pie-chart'" class="pie-chart">
+      <pie-chart />
+    </div>
     <div v-if="displayChart === 'calendar'" class="calendar">
       <v-calendar color="primary"></v-calendar>
     </div>
@@ -45,7 +48,11 @@
 </template>
 
 <script>
+import pieChart from '~/components/charts/pie-chart'
   export default {
+      components: {
+        pieChart
+    },
     data() {
       return {
         allTime: true,
