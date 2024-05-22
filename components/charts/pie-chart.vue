@@ -1,5 +1,7 @@
 <template>
-    <Pie :data="chartData" :options="options" />
+    <div>
+      <Pie :data="chartData" :options="options" style="position: relative;" :height=350 />
+    </div>
 </template>
 
 <script>

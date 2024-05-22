@@ -42,7 +42,7 @@
       <pie-chart />
     </div>
     <div v-if="displayChart === 'calendar'" class="calendar">
-      <v-calendar color="primary"></v-calendar>
+      <v-calendar color="primary" hide-week-number hide-header show-adjacent-months ></v-calendar>
     </div>
   </div>
 </template>
@@ -93,5 +93,20 @@ import pieChart from '~/components/charts/pie-chart'
   align-items: center;
   margin: 2% 0 0 2%;
 
+}
+.calendar{
+  width: 80%;
+  margin: auto;
+}
+::v-deep .v-calendar-month__days > .v-calendar-month__day{
+  min-height: 100px !important;
+}
+@media screen and (max-width:767px) { 
+  .calendar{
+    width: 100%;
+  }
+  ::v-deep .v-calendar-month__days > .v-calendar-month__day{
+    min-height: 50px !important;
+  }
 }
 </style>
