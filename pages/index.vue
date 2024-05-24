@@ -10,14 +10,7 @@
         ></v-switch>
       </div>
       <div class="month-picker">
-        <el-date-picker
-          v-model="value"
-          type="month"
-          placeholder="Pick a month"
-          format="YYYY/MM"
-          :clearable="false"
-          @change="changeFormat"
-        />
+        <date-picker @change="remoteCalendar" />
       </div>
       <div class="radio-group">
         <v-radio-group
@@ -38,26 +31,29 @@
         </v-radio-group>
       </div>
     </div>
-    <div v-if="displayChart === 'pie-chart'" class="pie-chart">
+    <div v-if="(displayChart === 'pie-chart' && isMobile === true) || (mobileDisplayChart === 'pie-chart' && isMobile === false)" class="pie-chart">
       <pie-chart />
     </div>
-    <div v-if="displayChart === 'calendar'" class="calendar">
-      <v-calendar color="primary" hide-week-number hide-header show-adjacent-months ></v-calendar>
+    <div v-if="(displayChart === 'calendar' && isMobile === true) || (mobileDisplayChart === 'calendar' && isMobile === false)" class="calendar">
+      <el-calendar v-model="calendarValue" />
     </div>
   </div>
 </template>
 
 <script>
+import datePicker from '~/components/date-picker'
 import pieChart from '~/components/charts/pie-chart'
   export default {
-      components: {
-        pieChart
+    components: {
+      pieChart,
+      datePicker
     },
+    inject: ['chart', 'calendarDate'],
     data() {
       return {
         allTime: true,
-        value: this.getCurrentMonth(),
-        displayChart: 'pie-chart'
+        displayChart: 'pie-chart',
+        calendarValue: new Date()
       }
     },
     computed: {
@@ -67,19 +63,24 @@ import pieChart from '~/components/charts/pie-chart'
           } else {
             return true
           }
+      },
+      mobileDisplayChart() {
+        // from layout provide
+        return this.chart()
+      }
+    },
+    watch: {
+      calendarDate: {
+        immediate: true,
+        handler(newVal) {
+          this.calendarValue = newVal
+        },
+        deep: true
       }
     },
     methods: {
-      getCurrentMonth() {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        return `${year}-${month}`
-      },
-      changeFormat(date) {
-        const year = new Date(date).getFullYear()
-        const month = (new Date(date).getMonth() + 1).toString().padStart(2, '0')
-        this.value = `${year}-${month}`
+      remoteCalendar(date) {
+        this.calendarValue = date
       }
     }
   }
@@ -94,19 +95,12 @@ import pieChart from '~/components/charts/pie-chart'
   margin: 2% 0 0 2%;
 
 }
-.calendar{
-  width: 80%;
-  margin: auto;
-}
-::v-deep .v-calendar-month__days > .v-calendar-month__day{
-  min-height: 100px !important;
+::v-deep .el-calendar__button-group{
+  display: none;
 }
 @media screen and (max-width:767px) { 
-  .calendar{
-    width: 100%;
-  }
-  ::v-deep .v-calendar-month__days > .v-calendar-month__day{
-    min-height: 50px !important;
+  ::v-deep .el-calendar-table .el-calendar-day{
+    height: auto;
   }
 }
 </style>
