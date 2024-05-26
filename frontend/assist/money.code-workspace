@@ -1,0 +1,47 @@
+{
+  "folders": [
+    {
+      "name": "frontend",
+      "path": "../frontend"
+    },
+    {
+      "name": "backend",
+      "path": "../backend"
+    },
+    {
+      "name": "project-assist",
+      "path": "../assist"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "extensions.ignoreRecommendations": true,
+    "files.exclude": {
+      "node_modules/": true
+    },
+    "search.exclude": {
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/bin": true,
+      "**/target": true,
+      "**/build": true
+    },
+    "[vue]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "Vue.volar"
+    },
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "native-ascii-converter.auto-conversion-on-activate": true,
+    "native-ascii-converter.auto-conversion-on-save": true,
+    "[sql]": {
+      "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+    }
+  }
+}

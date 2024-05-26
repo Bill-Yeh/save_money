@@ -13,6 +13,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
+    '@element-plus/nuxt'
   ],
   vite: {
     vue: {
