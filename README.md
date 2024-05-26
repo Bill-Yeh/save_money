@@ -1,75 +1,22 @@
-# Nuxt 3 Minimal Starter
+# MoneyMinder
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- [MoneyMinder](#moneyminder)
+  - [功能](#功能)
+  - [開發相關說明](#開發相關說明)
+  - [Other](#other)
 
-## Setup
+---
 
-Make sure to install the dependencies:
+MoneyMinder 是一個簡單的記帳軟體，幫助用戶追蹤他們的財務狀況，管理收入和支出。
 
-```bash
-# npm
-npm install
+## 功能
 
-# pnpm
-pnpm install
+- 添加和管理收入和支出項目
+- 分類和標記收入和支出項目
+- 生成月度和年度財務報告
+- 設定預算和目標，並跟蹤進度
+- 支持多用戶訪問和個性化設置
 
-# yarn
-yarn install
+## [開發相關說明](./doc/dev.md)
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Other
