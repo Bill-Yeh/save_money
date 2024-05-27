@@ -3,7 +3,7 @@
         <v-app-bar v-if="isMobile" color="#1E88E5" prominent>
             <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <div style="width: 20%"></div>
-            <date-picker style="width: 35%;" @change="remoteCalendar" />
+            <date-picker style="width: 35%;" @update="remoteCalendar" />
             <div class="switch-mode" style="width: 20%; display: flex; justify-content: center">
                 <el-switch
                   v-model="mode"
@@ -109,11 +109,6 @@ export default {
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, '0')
             return `${year}-${month}`
-        },
-        changeFormat(date) {
-            const year = new Date(date).getFullYear()
-            const month = (new Date(date).getMonth() + 1).toString().padStart(2, '0')
-            this.value = `${year}-${month}`
         },
         remoteCalendar(date) {
             this.calendarValue = date

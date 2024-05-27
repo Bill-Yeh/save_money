@@ -10,7 +10,7 @@
         ></v-switch>
       </div>
       <div class="month-picker">
-        <date-picker @change="remoteCalendar" />
+        <date-picker @update="remoteCalendar" />
       </div>
       <div class="radio-group">
         <v-radio-group

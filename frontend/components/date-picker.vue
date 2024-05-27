@@ -30,12 +30,7 @@ export default {
             this.value = `${year}-${month}`
 
             // use el-date-picker to remote control el-calendar
-            if (date) {
-                const year = date.getFullYear()
-                const month = date.getMonth()
-                const newDate = new Date(year, month)
-                this.$emit('change', newDate)
-            }
+            this.$emit('update', date)
         }
     }
 }

@@ -26,6 +26,9 @@
 <script>
 import recordsEditor from '~/components/records/records-editor'
   export default {
+    components: {
+      recordsEditor
+    },
     data: () => ({
       hideDefaultFooter: true,
       headers: [
