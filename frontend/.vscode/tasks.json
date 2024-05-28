@@ -1,0 +1,78 @@
+{
+  "version": "2.0.0",
+  "isDefault": true,
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "npm run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "generate",
+      "type": "shell",
+      "command": "npm run generate",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "preview",
+      "type": "shell",
+      "command": "npm run preview",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "postinstall",
+      "type": "shell",
+      "command": "npm run postinstall",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "mock",
+      "type": "shell",
+      "command": "npm run mock",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "dev-and-mock",
+      "type": "shell",
+      "command": "echo Starting dev and mock...",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["dev", "mock"],
+      "problemMatcher": []
+    }
+  ]
+}
