@@ -1,20 +1,22 @@
 <template>
   <div>
-    <h1>Posts</h1>
+    <h1>Users</h1>
     <ul>
-      <li v-for="user in userRef" :key="user.id">{{ user.title }}</li>
+      <li v-for="user in users.data" :key="user.id">
+        {{ user.name }} - {{ user.email }}
+      </li>
     </ul>
+    <v-btn
+      color="success"
+      size="large"
+      type="submit"
+      variant="elevated"
+      block
+      @click="signIn"
+    >
+      Sign In
+    </v-btn>
   </div>
-  <v-btn
-    color="success"
-    size="large"
-    type="submit"
-    variant="elevated"
-    block
-    @click="signIn"
-  >
-    Sign In
-  </v-btn>
 </template>
 
 <script setup lang="ts">
@@ -22,10 +24,15 @@ import { onMounted, ref } from 'vue';
 import { useUserStore } from '~/stores/user';
 import { useAuthStore } from '~/stores/auth';
 
-const userRef = ref(null);
+const users = ref([]);
 
-onMounted(() => {
-  userRef.value = useUserStore().getUsers();
+onMounted(async () => {
+  try {
+    users.value = await fetchUsers();
+    console.log('users.value = ' + users.value);
+  } catch (error) {
+    console.error('無法獲取使用者資料：', error);
+  }
 });
 
 const username = ref('');
@@ -39,5 +46,15 @@ const signIn = async () => {
   }
 };
 
-const posts = useAuthStore().posts;
+async function fetchUsers() {
+  try {
+    const userStore = useUserStore();
+    const userData = await userStore.fetchUsers();
+    console.log('獲取到的使用者資料：', userData);
+    return userData;
+  } catch (error) {
+    console.error('獲取使用者資料失敗：', error);
+    throw error;
+  }
+}
 </script>
