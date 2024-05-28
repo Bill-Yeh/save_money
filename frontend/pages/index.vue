@@ -37,6 +37,19 @@
     <div v-if="(displayChart === 'calendar' && isMobile === true) || (mobileDisplayChart === 'calendar' && isMobile === false)" class="calendar">
       <el-calendar v-model="calendarValue" />
     </div>
+    <div class="create-record">
+      <records-editor mode="create">
+        <template #button="{ openEditor }">
+          <v-btn
+              class="create-record-btn"
+              color="#1E88E5"
+              variant="elevated"
+              @click="openEditor">
+              Create
+          </v-btn>
+        </template>
+      </records-editor>
+    </div>
     <div class="record-detail-table">
       <records-detail-table />
     </div>
@@ -47,11 +60,13 @@
 import datePicker from '~/components/date-picker'
 import pieChart from '~/components/charts/pie-chart'
 import recordsDetailTable from '~/components/records/records-detail-table'
+import recordsEditor from '~/components/records/records-editor'
   export default {
     components: {
       pieChart,
       datePicker,
-      recordsDetailTable
+      recordsDetailTable,
+      recordsEditor
     },
     inject: ['chart', 'calendarDate'],
     data() {
@@ -100,11 +115,19 @@ import recordsDetailTable from '~/components/records/records-detail-table'
   margin: 2% 0 0 2%;
 
 }
-::v-deep .el-calendar__button-group{
+:deep(.el-calendar__button-group){
   display: none;
 }
+.create-record{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.create-record .create-record-btn{
+  width: 8%;
+}
 @media screen and (max-width:767px) { 
-  ::v-deep .el-calendar-table .el-calendar-day{
+  :deep(.el-calendar-table .el-calendar-day){
     height: auto;
   }
 }

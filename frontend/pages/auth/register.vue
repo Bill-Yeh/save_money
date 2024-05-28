@@ -42,7 +42,7 @@
           <template v-slot:label>
             <div>
               I agree that
-              <auth-warning types="terms">
+              <auth-warning mode="terms">
                 <template #button="{ openDialog }">
                   <span style="font-weight: 600; color: blue" @click="openDialog">
                     terms of service

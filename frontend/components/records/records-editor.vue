@@ -8,15 +8,16 @@
         </template>
         <v-card>
             <div class="card-container">
-                <v-card-title>{{ records.date }}</v-card-title>
+                <v-card-title v-if="mode === 'update'">{{ records.date }}</v-card-title>
+                <v-card-title v-else>Create New Record</v-card-title>
                 <div class="item-group">
                     <div class="item-title"><span>Date</span></div>
                     <div class="item-input">
                         <v-text-field
+                            v-model="recordData.date"
                             label="Date"
                             type="date"
                             variant="outlined"
-                            :model-value="records.date"
                             >
                         </v-text-field>
                     </div>
@@ -25,7 +26,7 @@
                     <div class="item-title"><span>Type</span></div>
                     <div class="item-input">
                         <v-radio-group
-                            v-model="records.type"
+                            v-model="recordData.type"
                             inline
                             >
                             <v-radio
@@ -43,9 +44,9 @@
                     <div class="item-title"><span>Category</span></div>
                     <div class="item-input">
                         <v-select
-                            v-model="records.category"
+                            v-model="recordData.category"
                             label="Category"
-                            :items="records.type === 'income' ?  incomeCategoryies : expenseCategories"
+                            :items="recordData.type === 'income' ?  incomeCategoryies : expenseCategories"
                             variant="outlined"
                             >
                         </v-select>
@@ -55,9 +56,9 @@
                     <div class="item-title"><span>Amount</span></div>
                     <div class="item-input">
                         <v-text-field
+                            v-model="recordData.amount"
                             label="Amount"
                             variant="outlined"
-                            :model-value="records.amount"
                             prefix="$"
                             suffix="TWD"
                             >
@@ -68,9 +69,9 @@
                     <div class="item-title"><span>Detail</span></div>
                     <div class="item-input">
                         <v-text-field
+                            v-model="recordData.detail"
                             label="Detail"
                             variant="outlined"
-                            :model-value="records.detail"
                             >
                         </v-text-field>
                     </div>
@@ -86,7 +87,6 @@
                     </div>
                     <div class="save-cancel-btn">
                         <v-btn
-                            color="warn"
                             variant="elevated"
                             block
                             @click="closeDialog">
@@ -106,13 +106,18 @@
         records: {
             type: Object,
             default: () => { return {} }
+        },
+        mode: {
+            type: String,
+            default: ''
         }
     },
     data () {
       return {
         dialog: false,
         expenseCategories: ['breakfast', 'lunch', 'dinner', 'shopping', 'social'],
-        incomeCategoryies: ['salary', 'stock', 'fund', 'bonus']
+        incomeCategoryies: ['salary', 'stock', 'fund', 'bonus'],
+        recordData: {}
       }
     },
     computed: {
@@ -124,7 +129,19 @@
           }
       }
     },
+    watch: {
+        dialog (v) {
+            if (v) this.init()
+        }
+    },
     methods: {
+      init() {
+        if (this.mode === 'update') {
+            this.recordData = this.records
+        } else {
+            this.recordData = {}
+        }
+      },
       openEditor() {
         this.dialog = !this.dialog
       },
@@ -151,7 +168,7 @@
 .item-input{
     width: 65%;
 }
-::v-deep .v-input__details{
+:deep(.v-input__details){
     display: none;
 }
 .item-btn-group{

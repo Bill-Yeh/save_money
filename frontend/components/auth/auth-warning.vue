@@ -7,7 +7,7 @@
         <slot name="button" :openDialog="openDialog"></slot>
       </template>
 
-      <v-card>
+      <v-card v-if="mode === 'terms'">
         <v-card-title>Terms of service</v-card-title>
         <v-card-text style="padding: 0 5%;">
           Think about the other forms you have to sign in your life. Your employment contract. Your mobile phone contract. Consent forms, such as for medical treatments. Service agreements at places you get help.
@@ -23,13 +23,33 @@
           Confirm
         </v-btn>
       </v-card>
+      <v-card v-else color="warning" variant="outlined">
+        <v-card-item>
+          <v-card-title>Waring</v-card-title>
+          <v-card-text>Are you sure to delete record ? </v-card-text>
+          <div class="yes-no-btn">
+            <v-btn
+              color="warning"
+              variant="text"
+              @click="removeRecord">
+              Yes
+            </v-btn>
+            <v-btn
+              color="black"
+              variant="text"
+              @click="closeDialog">
+              No
+            </v-btn>
+          </div>
+        </v-card-item>
+      </v-card>
     </v-dialog>
 </template>
 
 <script>
   export default {
     props: {
-      types: {
+      mode: {
         type: String,
         default: ''
       }
@@ -45,7 +65,24 @@
       },
       closeDialog() {
         this.dialog = false
+      },
+      removeRecord() {
+        this.$emit('update')
+        this.dialog = false
       }
     }
   }
 </script>
+
+<style scoped>
+.yes-no-btn{
+  display: flex;
+  justify-content: flex-end;
+}
+:deep(.v-card){
+  background-color: #fff;
+}
+:deep(.v-card-text){
+  padding: 0;
+}
+</style>
