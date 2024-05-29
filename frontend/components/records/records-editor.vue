@@ -17,8 +17,8 @@
                             v-model="recordData.date"
                             label="Date"
                             type="date"
-                            variant="outlined"
-                            >
+                            :rules="[rules.required]"
+                            variant="outlined">
                         </v-text-field>
                     </div>
                 </div>
@@ -28,6 +28,7 @@
                         <v-radio-group
                             v-model="recordData.type"
                             inline
+                            :rules="[rules.required]"
                             >
                             <v-radio
                                 label="Income"
@@ -48,7 +49,7 @@
                             label="Category"
                             :items="recordData.type === 'income' ?  incomeCategoryies : expenseCategories"
                             variant="outlined"
-                            >
+                            :rules="[rules.required]">
                         </v-select>
                     </div>
                 </div>
@@ -61,7 +62,7 @@
                             variant="outlined"
                             prefix="$"
                             suffix="TWD"
-                            >
+                            :rules="[rules.required, rules.numeric]">
                         </v-text-field>
                     </div>
                 </div>
@@ -72,7 +73,7 @@
                             v-model="recordData.detail"
                             label="Detail"
                             variant="outlined"
-                            >
+                            :rules="[rules.required]">
                         </v-text-field>
                     </div>
                 </div>
@@ -81,7 +82,8 @@
                         <v-btn
                             color="#1E88E5"
                             variant="elevated"
-                            block>
+                            block
+                            @click="saveRecord">
                             Save
                         </v-btn>
                     </div>
@@ -117,7 +119,11 @@
         dialog: false,
         expenseCategories: ['breakfast', 'lunch', 'dinner', 'shopping', 'social'],
         incomeCategoryies: ['salary', 'stock', 'fund', 'bonus'],
-        recordData: {}
+        recordData: {},
+        rules: {
+            required: value => !!value || 'Field is required',
+            numeric: value => (/^[1-9]\d*$/).test(value) || 'Only positive numbers are allowed'
+        }
       }
     },
     computed: {
@@ -147,6 +153,22 @@
       },
       closeDialog() {
         this.dialog = false
+      },
+      saveRecord() {
+        // check recordData values are exist and formal
+        const pattern = /^[1-9]\d*$/
+        if (this.recordData && (!this.recordData.date || !this.recordData.type || !this.recordData.category || !this.recordData.amount || !this.recordData.detail || !pattern.test(this.recordData.amount))) {
+            return false
+        }
+
+        if (this.mode === 'create') {
+            // create -> use post method
+
+        } else {
+            // update -> use put method
+        }
+        this.$emit('update', this.recordData)
+        this.dialog = false
       }
     }
   }
@@ -157,7 +179,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 }
 .item-title{
     width: 30%;
@@ -167,9 +189,7 @@
 }
 .item-input{
     width: 65%;
-}
-:deep(.v-input__details){
-    display: none;
+    margin-top: 2%;
 }
 .item-btn-group{
     width: 95%;

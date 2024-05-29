@@ -38,7 +38,7 @@
       <el-calendar v-model="calendarValue" />
     </div>
     <div class="create-record">
-      <records-editor mode="create">
+      <records-editor mode="create" @update="createNewRecord">
         <template #button="{ openEditor }">
           <v-btn
               class="create-record-btn"
@@ -51,7 +51,10 @@
       </records-editor>
     </div>
     <div class="record-detail-table">
-      <records-detail-table />
+      <records-detail-table
+      :records="records"
+      @updateRecord="updateRecord"
+      @remove="removeRecord" />
     </div>
   </div>
 </template>
@@ -73,7 +76,25 @@ import recordsEditor from '~/components/records/records-editor'
       return {
         allTime: true,
         displayChart: 'pie-chart',
-        calendarValue: new Date()
+        calendarValue: new Date(),
+        records: [
+          {
+            id: 1,
+            type: 'income',
+            date: '2024-05-26',
+            category: 'bonus',
+            amount: 5000,
+            detail: 'excellent performance'
+          },
+          {
+            id: 2,
+            type: 'expense',
+            date: '2024-05-25',
+            category: 'entertainment',
+            amount: 500,
+            detail: 'badminton'
+          }
+        ]
       }
     },
     computed: {
@@ -101,6 +122,21 @@ import recordsEditor from '~/components/records/records-editor'
     methods: {
       remoteCalendar(date) {
         this.calendarValue = date
+      },
+      createNewRecord(newRecord) {
+        this.records.push(newRecord)
+      },
+      updateRecord(updatedRecord) {
+        const index = this.records.findIndex(record => record.id === updatedRecord.id)
+        if (index !== -1) {
+          this.$set(this.records, index, updatedRecord)
+        }
+      },
+      removeRecord(item) {
+        const index = this.records.findIndex(record => record.id === item.id);
+        if (index !== -1) {
+          this.records.splice(index, 1)
+        }
       }
     }
   }

@@ -3,7 +3,7 @@
     :headers="headers"
     :items="records">
     <template v-slot:[`item.operation`]="{ item }">
-      <records-editor :records="item" mode="update">
+      <records-editor :records="item" mode="update" @update="emitRecordData">
         <template #button="{ openEditor }">
           <v-icon
             class="me-2"
@@ -36,6 +36,12 @@ import AuthWarning from '~/components/auth/auth-warning'
       recordsEditor,
       AuthWarning
     },
+    props: {
+        records: {
+            type: Array,
+            default: () => { return [] }
+        }
+    },
     data: () => ({
       hideDefaultFooter: true,
       headers: [
@@ -48,32 +54,14 @@ import AuthWarning from '~/components/auth/auth-warning'
         { title: 'Amount', align: 'start', key: 'amount' },
         { title: 'Detail', align: 'start', key: 'detail' },
         { title: 'Operation', align: 'start', value: 'operation' }
-      ],
-      records: [
-        {
-          id: 1,
-          type: 'income',
-          date: '2024-05-26',
-          category: 'bonus',
-          amount: 5000,
-          detail: 'excellent performance'
-        },
-        {
-          id: 2,
-          type: 'expense',
-          date: '2024-05-25',
-          category: 'entertainment',
-          amount: 500,
-          detail: 'badminton'
-        },
-      ],
+      ]
     }),
     methods: {
       removeRecord(item) {
-        const index = this.records.findIndex(record => record.id === item.id);
-        if (index !== -1) {
-          this.records.splice(index, 1)
-        }
+        this.$emit('remove', item)
+      },
+      emitRecordData(data) {
+        this.$emit('updateRecords', data)
       }
     }
   }
