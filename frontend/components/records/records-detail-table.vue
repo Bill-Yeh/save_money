@@ -2,7 +2,24 @@
   <v-data-table
     :headers="headers"
     :items="records">
-    <template v-slot:[`item.operation`]="{ item }">
+    <template v-slot:header="{ props  }">
+      <thead>
+        <tr>
+          <th v-for="header in props.headers" :key="header.key" :style="{ width: header.width }" :class="header.class">
+            {{ header.title }}
+          </th>
+        </tr>
+      </thead>
+    </template>
+    <template v-slot:[`item.category`]="{ item }">
+      <v-chip :color="getColor(item.type)">
+        {{ item.category }}
+      </v-chip>
+    </template>
+    <template v-slot:[`item.amount`]="{ item }">
+      <span>{{ item.amount }}</span>
+    </template>
+    <template v-slot:[`item.operation`]="{ item }" v-if="!isMobile">
       <records-editor :records="item" mode="update" @update="emitRecordData">
         <template #button="{ openEditor }">
           <v-icon
@@ -37,32 +54,48 @@ import AuthWarning from '~/components/auth/auth-warning'
       AuthWarning
     },
     props: {
+        headers: {
+          type: Array,
+          default: () => { return [] }
+        },
         records: {
             type: Array,
             default: () => { return [] }
         }
     },
     data: () => ({
-      hideDefaultFooter: true,
-      headers: [
-        {
-          title: 'Date',
-          align: 'start',
-          key: 'date',
-        },
-        { title: 'Category', align: 'start', key: 'category' },
-        { title: 'Amount', align: 'start', key: 'amount' },
-        { title: 'Detail', align: 'start', key: 'detail' },
-        { title: 'Operation', align: 'start', value: 'operation' }
-      ]
+      hideDefaultFooter: true
     }),
+    computed: {
+      isMobile() {
+          return this.$vuetify.display.mobile
+      },
+      computedHeaders() {
+      if (this.isMobile) {
+        return this.headers.filter(header => header.title !== 'Operation')
+      }
+      return this.headers
+    }
+    },
     methods: {
       removeRecord(item) {
         this.$emit('remove', item)
       },
       emitRecordData(data) {
         this.$emit('updateRecords', data)
+      },
+      getColor (type) {
+        return type === 'income' ? 'green' : 'red'
       }
     }
   }
 </script>
+
+<style scoped>
+.text-green {
+  color: green;
+}
+.text-red {
+  color: red;
+}
+</style>

@@ -155,12 +155,13 @@
         this.dialog = false
       },
       saveRecord() {
+        // convert string to Number
+        this.recordData.amount = parseInt(this.recordData.amount)
         // check recordData values are exist and formal
         const pattern = /^[1-9]\d*$/
         if (this.recordData && (!this.recordData.date || !this.recordData.type || !this.recordData.category || !this.recordData.amount || !this.recordData.detail || !pattern.test(this.recordData.amount))) {
             return false
         }
-
         if (this.mode === 'create') {
             // create -> use post method
 

@@ -51,10 +51,13 @@
       </records-editor>
     </div>
     <div class="record-detail-table">
-      <records-detail-table
-      :records="records"
-      @updateRecord="updateRecord"
-      @remove="removeRecord" />
+      <div v-for="(group, date) in groupedRecords" :key="date">
+        <records-detail-table
+        :headers="generateHeader(date, group.totalAmount)"
+        :records="group.records"
+        @updateRecords="updateRecord"
+        @remove="removeRecord" />
+      </div>
     </div>
   </div>
 </template>
@@ -93,6 +96,14 @@ import recordsEditor from '~/components/records/records-editor'
             category: 'entertainment',
             amount: 500,
             detail: 'badminton'
+          },
+          {
+            id: 3,
+            type: 'expense',
+            date: '2024-05-25',
+            category: 'social',
+            amount: 300,
+            detail: 'dinner'
           }
         ]
       }
@@ -108,6 +119,17 @@ import recordsEditor from '~/components/records/records-editor'
       mobileDisplayChart() {
         // from layout provide
         return this.chart()
+      },
+      groupedRecords() {
+        const grouped = this.records.reduce((acc, record) => {
+          if (!acc[record.date]) {
+            acc[record.date] = { records: [], totalAmount: 0 }
+          }
+          acc[record.date].records.push(record)
+          acc[record.date].totalAmount += (record.type === 'expense' ? -record.amount : record.amount)
+          return acc
+        }, {})
+        return grouped
       }
     },
     watch: {
@@ -129,13 +151,32 @@ import recordsEditor from '~/components/records/records-editor'
       updateRecord(updatedRecord) {
         const index = this.records.findIndex(record => record.id === updatedRecord.id)
         if (index !== -1) {
-          this.$set(this.records, index, updatedRecord)
+          this.records[index] = updatedRecord
         }
       },
       removeRecord(item) {
         const index = this.records.findIndex(record => record.id === item.id);
         if (index !== -1) {
           this.records.splice(index, 1)
+        }
+      },
+      generateHeader(date, totalAmount) {
+        const amountClass = totalAmount > 0 ? 'text-green' : 'text-red'
+        if (!this.isMobile) {
+          return [
+            { title: date, width: '40%', align: 'start', key: 'category' },
+            { title: 'Detail', width: '30%', align: 'start', key: 'detail' },
+            { title: totalAmount, width: '30%', align: 'start', key: 'amount', value: totalAmount, class: amountClass }
+          ]
+        } else {
+          return [
+            { title: 'Date', width: '14%', align: 'start', key: 'date' },
+            { title: 'Category', width: '19%', align: 'start', key: 'category' },
+            { title: 'Amount', width: '14%', align: 'start', key: 'amount' },
+            { title: 'Detail', width: '23%', align: 'start', key: 'detail' },
+            { title: `Total: ${totalAmount}`, width: '15%', align: 'start', key: 'amount', value: totalAmount, class: amountClass },
+            { title: 'Operation', align: 'start', width: '16%', value: 'operation' }
+          ]
         }
       }
     }
@@ -161,6 +202,12 @@ import recordsEditor from '~/components/records/records-editor'
 }
 .create-record .create-record-btn{
   width: 8%;
+}
+.text-green {
+  color: green;
+}
+.text-red {
+  color: red;
 }
 @media screen and (max-width:767px) { 
   :deep(.el-calendar-table .el-calendar-day){
