@@ -11,6 +11,10 @@
     {
       "name": "project-assist",
       "path": "../assist"
+    },
+    {
+      "name": "DOC",
+      "path": "../doc"
     }
   ],
   "settings": {
